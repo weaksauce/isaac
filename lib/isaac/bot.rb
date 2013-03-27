@@ -5,6 +5,11 @@ module Isaac
 
   Config = Struct.new(:server, :port, :ssl, :password, :nick, :realname, :version, :environment, :verbose, :encoding)
 
+#------------------------------------------------------------------------------------------
+# Class Bot
+#
+# The bot connects 
+#------------------------------------------------------------------------------------------
   class Bot
     attr_accessor :config, :irc, :nick, :channel, :message, :user, :host, :match,
       :error
@@ -38,6 +43,8 @@ module Isaac
     end
 
     def msg(recipient, text)
+      #puts "in msg: " 
+      #puts "#{recipient} :#{text}"
       raw("PRIVMSG #{recipient} :#{text}")
     end
 
@@ -116,6 +123,11 @@ module Isaac
     end
   end
 
+#------------------------------------------------------------------------------------------
+# Class IRC
+# 
+# handles connecting to the server, receiving and dispatching messages.
+#------------------------------------------------------------------------------------------
   class IRC < EventMachine::Connection
     def self.connect(bot, config)
       EventMachine.connect(config.server, config.port, self, bot, config)
@@ -185,6 +197,9 @@ module Isaac
     end
   end
 
+#------------------------------------------------------------------------------------------
+# Class Message
+#------------------------------------------------------------------------------------------
   class Message
     attr_accessor :raw, :prefix, :command, :params
 
